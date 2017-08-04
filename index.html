@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>NYT Article search</title>
+  <style type="text/css">
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+
+
+
+    <div id="articles-view"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+var searchTerm = prompt("Search Term");
+var startYear = prompt("Start Year");
+var startDate = startYear + "0101";
+var endYear = prompt("End Year");
+var endDate = endYear + "1231";
+var numRecords = prompt("Number of records");
+url += '?' + $.param({
+  'api-key': "a7382d4caee1441f9e6015cb05a18698",
+  'q': searchTerm,
+  'begin_date': startDate,
+  'end_date': endDate,
+});
+$.ajax({
+  url: url,
+  method: 'GET',
+}).done(function(result) {
+  console.log(result);
+  console.log (result.response.docs[0].headline.main);
+  console.log (result.response.docs[0].byline.original);
+  console.log (result.response.docs[0].type_of_material);
+  console.log (result.response.docs[0].pub_date);
+  console.log (result.response.docs[0].web_url);
+
+  for (var i=0; i<numRecords;i++){
+      $("#articles-view").prepend("<div><p><b>Title: </b>" + result.response.docs[i].headline.main + "</p><p><b>Byline: </b>" + result.response.docs[i].byline.original + "</p><p><b>Section: </b>" + result.response.docs[i].type_of_material + "</p><p><b>Timestamp: </b>" + result.response.docs[i].pub_date + "</p><p><a href=" +  result.response.docs[i].web_url + " target=_blank>Story link</a></p></div>" );
+  }
+
+
+}).fail(function(err) {
+  throw err;
+});
+
+
+    </script>
+  </div>
+</body>
+
+</html>
