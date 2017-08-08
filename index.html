@@ -4,30 +4,101 @@
 <head>
   <meta charset="utf-8">
   <title>NYT Article search</title>
+    <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+
   <style type="text/css">
+footer {
+  padding:50px;
+  text-align: center;
+}
+
+.search-results {
+  padding: 25px;
+}
 
   </style>
+}
 </head>
 
 <body>
 
-  <div class="container">
 
 
+<div class="container">
+
+    <br>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+      <h1 class="text-center">Search the NYTimes article archives</h1>
+    </div>
+
+    <div class="row">
 
 
-    <div id="articles-view"></div>
+<form role="form">
+<div class="form-group">
+  <label for="search-input">Search</label>
+  <input class="form-control" id="search-input" type="text">
+</div>
+
+<div class="form-group">
+  <label for="numRecords-input">Number of articles</label>
+  <input class="form-control" id="numRecords-input" type="text">
+</div>
+
+<div class="form-group">
+  <label for="startYear-input">Start Year</label>
+  <input class="form-control" id="startYear-input" type="text">
+</div>
+
+<div class="form-group">
+  <label for="endYear-input">End Year</label>
+  <input class="form-control" id="endYear-input" type="text">
+</div>
+
+  <button class="btn btn-default" id="add-entry" type="submit">Submit</button>
+</form>
+  </div>
+
+    <div class="panel-body search-results" id="articles-view"></div>
+
+  </div>
+<footer><p>For educational purposes only</p></footer>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
 var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
-var searchTerm = prompt("Search Term");
-var startYear = prompt("Start Year");
+
+$("#add-entry").on("click", function(event) {
+      event.preventDefault();
+
+$("#articles-view").empty();
+
+var searchTerm = $("#search-input").val();
+console.log ("Search term is " + searchTerm);
+
+var numRecords = $("#numRecords-input").val();
+console.log ("Number of records is " + numRecords);
+
+var startYear = $("#startYear-input").val();
+console.log ("Start year is " + startYear);
 var startDate = startYear + "0101";
-var endYear = prompt("End Year");
+console.log ("Start date is " + startDate);
+
+
+var endYear = $("#endYear-input").val();
+console.log ("End year is " + endYear);
 var endDate = endYear + "1231";
-var numRecords = prompt("Number of records");
+console.log ("End date is " + endDate);
+
+
+
+
 url += '?' + $.param({
   'api-key': "a7382d4caee1441f9e6015cb05a18698",
   'q': searchTerm,
@@ -45,18 +116,21 @@ $.ajax({
   console.log (result.response.docs[0].pub_date);
   console.log (result.response.docs[0].web_url);
 
+
   for (var i=0; i<numRecords;i++){
-      $("#articles-view").prepend("<div><p><b>Title: </b>" + result.response.docs[i].headline.main + "</p><p><b>Byline: </b>" + result.response.docs[i].byline.original + "</p><p><b>Section: </b>" + result.response.docs[i].type_of_material + "</p><p><b>Timestamp: </b>" + result.response.docs[i].pub_date + "</p><p><a href=" +  result.response.docs[i].web_url + " target=_blank>Story link</a></p></div>" );
+      $("#articles-view").prepend("<div><p><b>Title: </b>" + result.response.docs[i].headline.main + "</p><p><b>Byline: </b>" + result.response.docs[i].byline.original + "</p><p><b>Section: </b>" + result.response.docs[i].type_of_material + "</p><p><b>Timestamp: </b>" + result.response.docs[i].pub_date + "</p><p><a href=" +  result.response.docs[i].web_url + " target=_blank>Story link</a></p><hr></div>" );
   }
+
+        $("#articles-view").prepend("<h2>Search results</h2>")
+
 
 
 }).fail(function(err) {
   throw err;
 });
 
-
+});
     </script>
-  </div>
 </body>
 
 </html>
