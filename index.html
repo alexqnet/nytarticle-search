@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>NYT Article search</title>
+  <title>NYT Article Search</title>
     <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -50,7 +50,7 @@ footer {
 </div>
 
 <div class="form-group">
-  <label for="startYear-input">Start Year</label>
+  <label for="startYear-input">Start Year (archives date back to Sept. 18, 1851)</label>
   <input class="form-control" id="startYear-input" type="text">
 </div>
 
@@ -77,7 +77,7 @@ var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 $("#add-entry").on("click", function(event) {
       event.preventDefault();
 
-$("#articles-view").empty();
+$("#articles-view").empty();  
 
 var searchTerm = $("#search-input").val();
 console.log ("Search term is " + searchTerm);
@@ -118,7 +118,7 @@ $.ajax({
 
 
   for (var i=0; i<numRecords;i++){
-      $("#articles-view").prepend("<div><p><b>Title: </b>" + result.response.docs[i].headline.main + "</p><p><b>Byline: </b>" + result.response.docs[i].byline.original + "</p><p><b>Section: </b>" + result.response.docs[i].type_of_material + "</p><p><b>Timestamp: </b>" + result.response.docs[i].pub_date + "</p><p><a href=" +  result.response.docs[i].web_url + " target=_blank>Story link</a></p><hr></div>" );
+      $("#articles-view").prepend("<div><p><b>Title: </b>" + result.response.docs[i].headline.main + "</p><p><b>Byline: </b>" + result.response.docs[i].byline.original + "</p><p><b>Section: </b>" + result.response.docs[i].type_of_material + "</p><p><b>Date: </b>" + result.response.docs[i].pub_date + "</p><p><a href=" +  result.response.docs[i].web_url + " target=_blank>Story link</a></p><hr></div>" );
   }
 
         $("#articles-view").prepend("<h2>Search results</h2>")
